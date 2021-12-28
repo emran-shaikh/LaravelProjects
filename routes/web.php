@@ -28,9 +28,14 @@ Route::get('/dashboard', function () {
 //     return view('users');
 // })->middleware(['auth'])->name('users');
 
-// Route::get('/users', 'UserController@show')->middleware(['auth'])->name('users');
-
 Route::get('/users', [UserController::class, 'show'])->middleware(['auth'])->name('users');
-
+Route::get('/show', [UserController::class, 'show'])->middleware(['auth'])->name('show');
+Route::get('/create', [UserController::class, 'create'])->middleware(['auth'])->name('create');
+Route::get('/edit/{id}', [UserController::class, 'edit'])->middleware(['auth'])->name('edit');
+Route::patch('/update/{id}', [UserController::class, 'update'])->middleware(['auth'])->name('update');
+Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->middleware(['auth'])->name('destroy');
+Route::post('/store', [UserController::class, 'store'])->middleware(['auth'])->name('store');
+//Route::get('/create', [UserController::class, 'roles'])->middleware(['auth'])->name('create');
+Route::get('changepassword', function() { $user = \App\Models\User::where('email', 'test@test.com')->first(); $user->password = Hash::make('123456'); $user->save();  echo 'Password changed successfully.'; });
 
 require __DIR__.'/auth.php';

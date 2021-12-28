@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 // use App\Http\Controllers\Controller;
 // use App\Providers\RouteServiceProvider;
+use App\Models\Role;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
 // use Illuminate\Support\Facades\Auth;
@@ -16,12 +18,88 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show()
+    /*public function show()
     {
         $data = ['name'=>'furqan'];
         $data['users'] = User::all();
         return view('users.users', $data);
+    }*/
+
+
+    public function create(User $user)
+    {
+        $role['roles'] = Role::all();
+        return view('users.create', $role);
+        return view('users.create', $user);
     }
 
-    
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'status' => 'required',
+            'role_id' => 'required'
+        ]);
+        $data = $request->all();
+        $data['role_id'] = $request['role_id'];
+        $data['is_active'] = $request['status'];
+        $data['password'] = $request['password'];
+        User::create($data);
+
+        return redirect()->route('users')
+            ->with('success','Product created successfully.');
+    }
+
+
+    public function show(User $user)
+    {
+        $user['users'] = User::all();
+//        return view('users.show',compact('user'));
+        return view('users.users', $user);
+    }
+
+    public function edit(int $id)
+    {
+        $user['user'] = User::find($id);
+        $user['roles'] = Role::all();
+//        $selectedRole = User::first()->role_id;
+//        dd($user);
+        return view('users.edit', $user);
+    }
+
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'status' => 'required',
+            'role_id' => 'required'
+        ]);
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->is_active = $request->status;
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return redirect()->route('users')
+            ->with('success','User updated successfully');
+    }
+
+
+    public function destroy(User $user, int $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return redirect()->route('users')
+            ->with('success','User deleted successfully');
+    }
+
+
 }
