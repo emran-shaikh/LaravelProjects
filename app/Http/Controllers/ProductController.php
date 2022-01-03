@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\products;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -26,9 +29,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
 
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +43,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'detail' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $input = $request->all();
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        }else{
+        unset($input['image']);
+    }
+
+        products::create($input);
+
+        return redirect()->route('products.index')
+            ->with('success','Product created successfully.');
     }
 
     /**
@@ -61,9 +86,23 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        $products['products'] = products::find($id);
+        return view('products.edit', $products);
+    }
+
+    public function display($id)
+    {
+        $products['products'] = products::find($id);
+        return view('products.display', $products);
+    }
+
+    public function productdetail($id)
+    {
+//        dd($id);
+        $products = products::find($id);
+        return view('singleproduct', ['products'=>$products]);
     }
 
     /**
@@ -73,9 +112,31 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'detail' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $input = products::find($id);
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'image/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input->image = "$profileImage";
+//            dd($input);
+        }else{
+            unset($input['image']);
+        }
+//        dd($input);
+        $input->update($request->all($input->image));
+
+        return redirect()->route('products.index')
+            ->with('success','Product created successfully.');
+
+
     }
 
     /**
@@ -84,8 +145,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        $products = products::query()->find($id);
+        $products->delete();
+
+        return redirect()->route('products.index')
+            ->with('success','Product deleted successfully');
     }
 }

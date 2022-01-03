@@ -17,3 +17,4 @@ composer.lock.json
 package-lock.json
 /public/css
 /public/js
+/public/image

@@ -25,31 +25,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// Route::get('/users', function () {
-//     return view('users');
-// })->middleware(['auth'])->name('users');
 
 Route::get('/users', [UserController::class, 'show'])->middleware(['auth'])->name('users');
-Route::get('/show', [UserController::class, 'show'])->middleware(['auth'])->name('show');
+Route::get('/view/{id}', [UserController::class, 'view'])->middleware(['auth'])->name('view');
 Route::get('/create', [UserController::class, 'create'])->middleware(['auth'])->name('create');
 Route::get('/edit/{id}', [UserController::class, 'edit'])->middleware(['auth'])->name('edit');
 Route::patch('/update/{id}', [UserController::class, 'update'])->middleware(['auth'])->name('update');
 Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->middleware(['auth'])->name('destroy');
 Route::post('/store', [UserController::class, 'store'])->middleware(['auth'])->name('store');
-//Route::get('/create', [UserController::class, 'roles'])->middleware(['auth'])->name('create');
-//Route::get('changepassword', function() { $user = \App\Models\User::where('email', 'test@test.com')->first(); $user->password = Hash::make('123456'); $user->save();  echo 'Password changed successfully.'; });
 
+//Route::get('changepassword', function() { $user = \App\Models\User::where('email', 'test@test.com')->first(); $user->password = Hash::make('123456'); $user->save();  echo 'Password changed successfully.'; });
 //Route for products
 Route::get('/', [ProductController::class, 'show']);
-Route::resource('products', \App\Http\Controllers\ProductController::class);
-//Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products');
-//Route::get('/products', [UserController::class, 'show'])->middleware(['auth'])->name('products');
-//Route::get('/show', [UserController::class, 'show'])->middleware(['auth'])->name('show');
-//Route::get('/create', [UserController::class, 'create'])->middleware(['auth'])->name('create');
-//Route::get('/edit/{id}', [UserController::class, 'edit'])->middleware(['auth'])->name('edit');
-//Route::patch('/update/{id}', [UserController::class, 'update'])->middleware(['auth'])->name('update');
-//Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->middleware(['auth'])->name('destroy');
-//Route::post('/store', [UserController::class, 'store'])->middleware(['auth'])->name('store');
+//Route::get('/productview/{id}', [ProductController::class, 'view'])->middleware(['auth'])->name('productview');
+//Route::get('/productview/{id}', [ProductController::class, 'display'])->middleware(['auth'])->name('productview');
+Route::get('/single/{id}', [ProductController::class, 'display'])->middleware(['auth'])->name('single');
+Route::get('/productdetail/{id}', [ProductController::class, 'productdetail'])->name('productdetail');
+Route::resource('products', ProductController::class);
+
 
 
 require __DIR__.'/auth.php';

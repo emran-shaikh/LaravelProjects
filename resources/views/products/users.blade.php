@@ -8,21 +8,15 @@
     <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="flex flex-col">
 
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <div class="row">
-                <div class="col-lg-12 margin-tb">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="pull-right px-4 sm:-my-px py-3 bg-gray-50 text-right sm:px-6" style="float:right; margin:15px 0;">
-                        <a style="background: green" class="btn btn-success inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{route('create')}}"> Add New User</a>
+                        <a style="background: green" class="btn btn-success inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{route('create')}}"> Add New Product</a>
                     </div>
                 </div>
-                {{--<div class="px-4 sm:-my-px py-3 bg-gray-50 text-right sm:px-6" style="float:right; margin:15px 0;">
-                    <button style="background-color: #000;" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Update
-                    </button>
-                </div>--}}
-
             </div>
 
             @if ($message = Session::get('success'))
@@ -84,22 +78,13 @@
 
 {{--                            <a class="btn btn-info" href="{{ route('show',$user->id) }}">Show</a>--}}
 
-                            <a class="btn btn-primary" href="{{ route('edit',$user->id) }}" style="
-    background: #7b7bff;
-    padding: 5px 5px 5px 5px;
-    border-radius: 5px;
-    color: #fff;
-">Edit</a>
+
+                            <a class="btn btn-primary flex-none uppercase bg-gray-200 text-gray-600 text-xs tracking-wide font-semibold px-2 py-1 rounded-md" href="{{ route('edit',$user->id) }}">Edit</a>
 
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="btn btn-danger"style="
-    background: red;
-    padding: 5px 5px 5px 5px;
-    border-radius: 5px;
-    color: #fff;
-">Delete</button>
+                            <button type="submit" class="btn btn-primary flex-none uppercase bg-gray-200 text-gray-600 text-xs tracking-wide font-semibold px-2 py-1 rounded-md">Delete</button>
                         </form>
                     </td>
                   </tr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 // use App\Http\Controllers\Controller;
 // use App\Providers\RouteServiceProvider;
+use App\Models\products;
 use App\Models\Role;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
@@ -24,12 +25,18 @@ class UserController extends Controller
         $data['users'] = User::all();
         return view('users.users', $data);
     }*/
-
+public function index()
+    {
+        //
+        $products = products::all();
+        return view('products', $products);
+    }
 
     public function create(User $user)
     {
-        $role['roles'] = Role::all();
-        return view('users.create', $role);
+        $user['roles'] = Role::all();
+        $user['user'] = User::all();
+        $user['statuses'] = ['InActive', 'Active'];
         return view('users.create', $user);
     }
 
@@ -49,7 +56,7 @@ class UserController extends Controller
         User::create($data);
 
         return redirect()->route('users')
-            ->with('success','Product created successfully.');
+            ->with('success','User created successfully.');
     }
 
 
@@ -64,9 +71,16 @@ class UserController extends Controller
     {
         $user['user'] = User::find($id);
         $user['roles'] = Role::all();
-//        $selectedRole = User::first()->role_id;
-//        dd($user);
+        $user['statuses'] = ['InActive', 'Active'];
         return view('users.edit', $user);
+    }
+
+    public function view(int $id)
+    {
+        $user['user'] = User::find($id);
+        $user['roles'] = Role::all();
+        $user['statuses'] = ['InActive', 'Active'];
+        return view('users.view', $user);
     }
 
 
